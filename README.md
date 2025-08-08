@@ -2,7 +2,6 @@
 
 A modern quiz platform that transforms your study materials into interactive practice tests. Upload documents or use our comprehensive question bank covering programming, algorithms, data structures, and cloud computing.
 
-![ManaQuiz Demo](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=ManaQuiz+Demo)
 
 ## ✨ Features
 
