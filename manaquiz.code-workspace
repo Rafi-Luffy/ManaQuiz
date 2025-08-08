@@ -1,0 +1,11 @@
+{
+  "folders": [
+    {
+      "name": "Web App",
+      "path": "./apps/web"
+    }
+  ],
+  "settings": {
+    "typescript.preferences.root": "./apps/web"
+  }
+}

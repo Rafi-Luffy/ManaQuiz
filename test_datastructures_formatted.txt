@@ -1,0 +1,52 @@
+Data Structures - NPTEL Practice Test
+
+Answer all questions by selecting the most appropriate option.
+
+1. What is the time complexity of accessing an element in an array by index?
+a) O(1)
+b) O(n)
+c) O(log n)
+d) O(n²)
+Answer: a
+
+2. Which data structure follows LIFO principle?
+a) Queue
+b) Stack
+c) Array
+d) Linked List
+Answer: b
+
+3. What is the worst-case time complexity of Quick Sort?
+a) O(n)
+b) O(n log n)
+c) O(n²)
+d) O(log n)
+Answer: c
+
+4. In a binary search tree, what is the average time complexity for search operation?
+a) O(1)
+b) O(log n)
+c) O(n)
+d) O(n²)
+Answer: b
+
+5. Which sorting algorithm is stable?
+a) Quick Sort
+b) Heap Sort
+c) Merge Sort
+d) Selection Sort
+Answer: c
+
+6. What is the space complexity of recursive implementation of Fibonacci sequence?
+a) O(1)
+b) O(log n)
+c) O(n)
+d) O(2^n)
+Answer: c
+
+7. In a doubly linked list, each node contains:
+a) Only data
+b) Data and one pointer
+c) Data and two pointers
+d) Only pointers
+Answer: c

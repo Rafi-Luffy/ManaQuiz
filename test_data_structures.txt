@@ -1,0 +1,71 @@
+Data Structures and Algorithms - NPTEL Course
+
+Module 1: Arrays and Linked Lists
+
+Arrays:
+An array is a collection of elements stored in contiguous memory locations. Arrays provide constant time access to elements using indices.
+
+Advantages of Arrays:
+- Random access to elements (O(1) time complexity)
+- Memory efficient storage
+- Cache friendly due to locality of reference
+
+Disadvantages of Arrays:
+- Fixed size (in static arrays)
+- Insertion and deletion operations are expensive (O(n))
+
+Linked Lists:
+A linked list is a linear data structure where elements are stored in nodes, and each node contains data and a reference to the next node.
+
+Types of Linked Lists:
+1. Singly Linked List: Each node points to the next node
+2. Doubly Linked List: Each node has pointers to both next and previous nodes
+3. Circular Linked List: The last node points back to the first node
+
+Time Complexities:
+- Access: O(n)
+- Search: O(n)
+- Insertion: O(1) at beginning, O(n) at arbitrary position
+- Deletion: O(1) at beginning, O(n) at arbitrary position
+
+Sorting Algorithms:
+1. Bubble Sort - O(n²) time complexity
+2. Selection Sort - O(n²) time complexity
+3. Insertion Sort - O(n²) time complexity
+4. Merge Sort - O(n log n) time complexity
+5. Quick Sort - O(n log n) average case, O(n²) worst case
+
+Binary Search:
+Binary search works on sorted arrays and has O(log n) time complexity.
+
+Practice Questions:
+
+1. What is the time complexity of accessing an element in an array?
+a) O(1)
+b) O(n)
+c) O(log n)
+d) O(n²)
+
+2. Which data structure provides dynamic memory allocation?
+a) Array
+b) Linked List
+c) Stack
+d) Queue
+
+3. What is the worst-case time complexity of Quick Sort?
+a) O(n)
+b) O(n log n)
+c) O(n²)
+d) O(log n)
+
+4. In a doubly linked list, each node contains:
+a) Only data
+b) Data and one pointer
+c) Data and two pointers
+d) Only pointers
+
+5. What is the space complexity of Merge Sort?
+a) O(1)
+b) O(log n)
+c) O(n)
+d) O(n²)

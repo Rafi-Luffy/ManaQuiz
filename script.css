@@ -1,0 +1,272 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- ENHANCED SAMPLE DATA (The AI's Output) ---
+    const allQuestions = [
+        {
+            question: "In Python, what is the primary purpose of the `__init__` method in a class?",
+            options: ["To initialize the class instance", "To destroy the class instance", "To print class details", "To be called when the class is imported"],
+            answer: "To initialize the class instance",
+            topic: "Object-Oriented Programming",
+            difficulty: "Medium",
+            type: "MCQ",
+            explanation: "The `__init__` method is a constructor that is automatically called when a new instance of a class is created. Its primary role is to initialize the instance's attributes."
+        },
+        {
+            question: "What will be the output of `print(list(range(2, 8, 2)))`?",
+            options: ["[2, 4, 6, 8]", "[2, 4, 6]", "[2, 3, 4, 5, 6, 7]", "[4, 6, 8]"],
+            answer: "[2, 4, 6]",
+            topic: "Data Structures",
+            difficulty: "Easy",
+            type: "MCQ",
+            explanation: "`range(start, stop, step)` generates numbers from start up to (but not including) stop. So, `range(2, 8, 2)` produces 2, 4, and 6."
+        },
+        {
+            question: "Which of the following sorting algorithms has the best average-case time complexity?",
+            options: ["Bubble Sort", "Insertion Sort", "Merge Sort", "Selection Sort"],
+            answer: "Merge Sort",
+            topic: "Algorithms",
+            difficulty: "Medium",
+            type: "MCQ",
+            explanation: "Merge Sort has an average and worst-case time complexity of O(n log n), which is generally better than the O(n^2) complexity of Bubble, Insertion, and Selection Sort."
+        },
+        // ... Add many more questions to cover various topics and difficulties
+    ];
+
+    // --- STATE MANAGEMENT ---
+    let state = {};
+
+    function resetState() {
+        state = {
+            questions: [],
+            currentQuestionIndex: 0,
+            userAnswers: [],
+            questionStatus: [],
+            timeSpent: [],
+            timerInterval: null,
+            startTime: null,
+            testMode: 'timed',
+        };
+    }
+
+    // --- DOM ELEMENT CACHE ---
+    const screens = {
+        setup: document.getElementById('setup-screen'),
+        instructions: document.getElementById('instructions-screen'),
+        quiz: document.getElementById('quiz-container'),
+        results: document.getElementById('results-dashboard'),
+        review: document.getElementById('review-screen'),
+    };
+    const modals = {
+        calculator: document.getElementById('calculator-modal'),
+        scratchpad: document.getElementById('scratchpad-modal'),
+        submit: document.getElementById('submit-modal'),
+    };
+    // ... (cache all other elements here for performance)
+
+    // --- SCREEN NAVIGATION ---
+    function navigateTo(screenName) {
+        Object.values(screens).forEach(s => s.classList.remove('active'));
+        screens[screenName].classList.add('active');
+    }
+
+    // --- SETUP LOGIC ---
+    document.getElementById('start-btn').addEventListener('click', () => {
+        // In a real app, you'd fetch questions based on these settings
+        const numQuestions = document.getElementById('num-questions').value;
+        state.testMode = document.querySelector('input[name="mode"]:checked').value;
+        
+        // For demo, we just slice the sample data
+        state.questions = allQuestions.slice(0, numQuestions);
+
+        document.getElementById('instr-q-count').textContent = state.questions.length;
+        document.getElementById('instr-duration').textContent = state.questions.length * 1.5; // 1.5 mins per Q
+        
+        navigateTo('instructions');
+    });
+
+    // --- INSTRUCTIONS LOGIC ---
+    const confirmCheckbox = document.getElementById('confirm-checkbox');
+    const proceedBtn = document.getElementById('proceed-btn');
+    confirmCheckbox.addEventListener('change', () => {
+        proceedBtn.disabled = !confirmCheckbox.checked;
+    });
+    proceedBtn.addEventListener('click', () => {
+        if (confirmCheckbox.checked) {
+            startQuiz();
+        }
+    });
+
+    // --- QUIZ LOGIC ---
+    function startQuiz() {
+        resetState(); // Reset state but keep generated questions
+        const numQuestions = parseInt(document.getElementById('num-questions').value, 10);
+        state.questions = allQuestions.slice(0, numQuestions);
+        
+        state.userAnswers = new Array(state.questions.length).fill(null);
+        state.questionStatus = new Array(state.questions.length).fill('not-visited');
+        state.timeSpent = new Array(state.questions.length).fill(0);
+        state.startTime = Date.now();
+        
+        document.getElementById('course-name-display').textContent = document.getElementById('course-name-input').value;
+
+        buildQuestionPalette();
+        loadQuestion(0);
+        if (state.testMode === 'timed') {
+            startTimer(state.questions.length * 1.5 * 60);
+        } else {
+            document.getElementById('timer').textContent = "Practice";
+        }
+        navigateTo('quiz');
+    }
+
+    // ... (Add loadQuestion, buildQuestionPalette, updatePalette functions here, they are mostly the same)
+    // ... (Add button listeners for Save/Next, Mark, Clear)
+
+    function loadQuestion(index) {
+        // Record time spent on the previous question
+        if (state.questionStartTime) {
+            state.timeSpent[state.currentQuestionIndex] += Date.now() - state.questionStartTime;
+        }
+
+        // Update status of the question we are leaving
+        if (state.questionStatus[state.currentQuestionIndex] === 'not-visited') {
+            state.questionStatus[state.currentQuestionIndex] = 'not-answered';
+        }
+        
+        state.currentQuestionIndex = index;
+        const question = state.questions[index];
+
+        // Mark the new question as 'not-answered' if it was 'not-visited'
+        if (state.questionStatus[index] === 'not-visited') {
+            state.questionStatus[index] = 'not-answered';
+        }
+
+        document.getElementById('question-number').textContent = `Question No. ${index + 1}`;
+        document.getElementById('question-text').textContent = question.question;
+        document.getElementById('q-type-badge').textContent = question.type;
+        document.getElementById('q-difficulty-badge').textContent = question.difficulty;
+        document.getElementById('q-difficulty-badge').className = `badge ${question.difficulty}`;
+        
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = ''; // Clear previous options
+
+        // Option rendering logic... (same as before)
+
+        state.questionStartTime = Date.now();
+        updatePalette();
+    }
+
+    // --- RESULTS & ANALYTICS ---
+    function showResultsDashboard() {
+        const totalTime = Math.floor((Date.now() - state.startTime) / 1000);
+        const correctAnswers = state.userAnswers.filter((ans, i) => ans === state.questions[i].answer).length;
+        const score = Math.round((correctAnswers / state.questions.length) * 100);
+
+        // Score Circle
+        document.getElementById('score-percentage').textContent = `${score}%`;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary-color) 0% ${score}%, var(--border-color) ${score}% 100%)`;
+        document.getElementById('score-text').textContent = `${correctAnswers} / ${state.questions.length} Correct`;
+
+        // Performance Stats
+        document.getElementById('stats-details').innerHTML = `
+            <p><span>Correct Answers:</span> <span style="color:var(--success-color)">${correctAnswers}</span></p>
+            <p><span>Incorrect Answers:</span> <span style="color:var(--danger-color)">${state.questions.length - correctAnswers - (state.userAnswers.filter(a => a===null).length)}</span></p>
+            <p><span>Questions Skipped:</span> <span>${state.userAnswers.filter(a => a===null).length}</span></p>
+        `;
+
+        // Time Management
+        const avgTime = Math.round(totalTime / state.questions.length);
+        document.getElementById('time-details').innerHTML = `
+            <p><span>Total Time Taken:</span> <span>${Math.floor(totalTime / 60)}m ${totalTime % 60}s</span></p>
+            <p><span>Avg. Time / Question:</span> <span>${avgTime}s</span></p>
+        `;
+        
+        renderTopicAnalytics();
+        generateAIFeedback(correctAnswers);
+
+        navigateTo('results');
+    }
+
+    function renderTopicAnalytics() {
+        const topicPerformance = {}; // { "Topic": { correct: 0, total: 0 } }
+        state.questions.forEach((q, i) => {
+            if (!topicPerformance[q.topic]) {
+                topicPerformance[q.topic] = { correct: 0, total: 0 };
+            }
+            topicPerformance[q.topic].total++;
+            if (state.userAnswers[i] === q.answer) {
+                topicPerformance[q.topic].correct++;
+            }
+        });
+
+        const chartContainer = document.getElementById('topic-analytics-chart');
+        chartContainer.innerHTML = '';
+        for (const topic in topicPerformance) {
+            const { correct, total } = topicPerformance[topic];
+            const accuracy = Math.round((correct / total) * 100);
+            const bar = document.createElement('div');
+            bar.className = 'topic-bar';
+            bar.innerHTML = `
+                <div class="topic-name">${topic}</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: ${accuracy}%;">${accuracy}%</div>
+                </div>
+                <div class="topic-score">${correct}/${total}</div>
+            `;
+            chartContainer.appendChild(bar);
+        }
+    }
+    
+    function generateAIFeedback(correctAnswers) {
+        let feedback = "";
+        if (correctAnswers / state.questions.length > 0.8) {
+            feedback = "Excellent performance! You have a strong grasp of the concepts. Focus on reducing time on easy questions to save more for complex ones.";
+        } else if (correctAnswers / state.questions.length > 0.5) {
+            feedback = "Good job! You have a solid foundation. Review the topics where you scored below 70% to turn your good score into a great one. Pay attention to the explanations for incorrect answers.";
+        } else {
+            feedback = "A good starting point. This test has highlighted areas for improvement. Focus on the fundamental concepts of your lowest-scoring topics. Use the review feature to understand your mistakes deeply.";
+        }
+        document.getElementById('ai-feedback').textContent = feedback;
+    }
+    
+    // --- REVIEW LOGIC ---
+    document.getElementById('review-answers-btn').addEventListener('click', () => {
+        renderReviewItems('all');
+        navigateTo('review');
+    });
+    
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelector('.filter-btn.active').classList.remove('active');
+            btn.classList.add('active');
+            renderReviewItems(btn.dataset.filter);
+        });
+    });
+
+    function renderReviewItems(filter) {
+        const reviewArea = document.getElementById('review-area');
+        reviewArea.innerHTML = '';
+        state.questions.forEach((q, i) => {
+            const userAnswer = state.userAnswers[i];
+            const isCorrect = userAnswer === q.answer;
+            const isSkipped = userAnswer === null;
+
+            if (filter === 'all' || 
+               (filter === 'correct' && isCorrect) ||
+               (filter === 'incorrect' && !isCorrect && !isSkipped) ||
+               (filter === 'skipped' && isSkipped))
+            {
+                // Create and append the review item...
+            }
+        });
+    }
+
+    // --- EVENT LISTENERS INITIALIZATION ---
+    document.getElementById('submit-quiz-btn').addEventListener('click', showResultsDashboard); // Simplified for demo
+    document.getElementById('back-to-dashboard-btn').addEventListener('click', () => navigateTo('results'));
+    document.getElementById('retake-btn').addEventListener('click', () => navigateTo('setup'));
+
+    // --- START THE APP ---
+    resetState();
+    navigateTo('setup');
+});

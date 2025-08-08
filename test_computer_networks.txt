@@ -1,0 +1,61 @@
+Computer Networks - NPTEL Course
+
+Chapter 1: Introduction to Computer Networks
+
+A computer network is a collection of interconnected devices that can communicate and share resources. Networks can be classified based on their geographical coverage:
+
+1. Local Area Network (LAN): Covers a small geographical area like a building or campus
+2. Wide Area Network (WAN): Covers a large geographical area, often spanning cities or countries
+3. Metropolitan Area Network (MAN): Covers a city or metropolitan area
+
+Network Topologies:
+- Bus Topology: All devices connected to a single communication line
+- Star Topology: All devices connected to a central hub or switch
+- Ring Topology: Devices connected in a circular fashion
+- Mesh Topology: Every device connected to every other device
+
+The OSI Model consists of 7 layers:
+1. Physical Layer - Deals with physical transmission
+2. Data Link Layer - Provides node-to-node delivery
+3. Network Layer - Handles routing
+4. Transport Layer - Provides end-to-end delivery
+5. Session Layer - Manages sessions
+6. Presentation Layer - Handles data encryption/decryption
+7. Application Layer - Provides network services to applications
+
+TCP/IP Protocol Suite:
+- TCP (Transmission Control Protocol): Reliable, connection-oriented protocol
+- UDP (User Datagram Protocol): Unreliable, connectionless protocol
+- IP (Internet Protocol): Handles addressing and routing
+
+Questions for Practice:
+
+1. What does LAN stand for?
+a) Large Area Network
+b) Local Area Network
+c) Long Area Network
+d) Linear Area Network
+
+2. Which topology connects all devices to a central hub?
+a) Bus
+b) Ring
+c) Star
+d) Mesh
+
+3. How many layers are in the OSI model?
+a) 5
+b) 6
+c) 7
+d) 8
+
+4. Which protocol is connection-oriented?
+a) UDP
+b) TCP
+c) IP
+d) ICMP
+
+5. What is the main function of the Network Layer?
+a) Physical transmission
+b) Routing
+c) Session management
+d) Data encryption

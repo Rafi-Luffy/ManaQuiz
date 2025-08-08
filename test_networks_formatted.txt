@@ -1,0 +1,59 @@
+Computer Networks - NPTEL Assignment
+
+Instructions: Choose the best answer for each question.
+
+1. What does LAN stand for?
+a) Large Area Network
+b) Local Area Network
+c) Long Area Network
+d) Linear Area Network
+Answer: b
+
+2. Which topology connects all devices to a central hub?
+a) Bus
+b) Ring
+c) Star
+d) Mesh
+Answer: c
+
+3. How many layers are in the OSI model?
+a) 5
+b) 6
+c) 7
+d) 8
+Answer: c
+
+4. Which protocol is connection-oriented?
+a) UDP
+b) TCP
+c) IP
+d) ICMP
+Answer: b
+
+5. What is the main function of the Network Layer?
+a) Physical transmission
+b) Routing
+c) Session management
+d) Data encryption
+Answer: b
+
+6. Which of the following is NOT a network topology?
+a) Star
+b) Ring
+c) Tree
+d) Linear
+Answer: d
+
+7. TCP stands for:
+a) Transfer Control Protocol
+b) Transmission Control Protocol
+c) Transport Control Protocol
+d) Terminal Control Protocol
+Answer: b
+
+8. In which layer of OSI model does HTTP operate?
+a) Transport Layer
+b) Session Layer
+c) Presentation Layer
+d) Application Layer
+Answer: d
